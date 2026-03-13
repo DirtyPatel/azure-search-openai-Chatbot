@@ -1,0 +1,12 @@
+<svg width="1600" height="260" viewBox="0 0 1600 260" xmlns="http://www.w3.org/2000/svg">
+  <path
+    d="
+      M0 160
+      A2200 420 0 0 1 1600 65
+      L1600 190
+      A2200 560 0 0 0 0 210
+      Z
+    "
+    fill="#006341"
+  />
+</svg>
