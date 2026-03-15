@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import styles from "./Layout.module.css";
 
 import { useLogin } from "../../authConfig";
-
 import { LoginButton } from "../../components/LoginButton";
+import appLogo from "../../assets/applogo.png";
 
 const Layout = () => {
     const { t } = useTranslation();
@@ -14,7 +14,7 @@ const Layout = () => {
             <header className={styles.header} role={"banner"}>
                 <div className={styles.headerContainer}>
                     <Link to="/" className={styles.headerTitleContainer}>
-                        <h3 className={styles.headerTitle}>{t("headerTitle")}</h3>
+                        <img src={appLogo} className={styles.headerLogo} alt="Algonquin College" />
                     </Link>
                     <div className={styles.loginMenuContainer}>{useLogin && <LoginButton />}</div>
                 </div>

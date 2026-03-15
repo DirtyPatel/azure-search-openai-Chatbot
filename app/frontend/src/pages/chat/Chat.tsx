@@ -13,7 +13,6 @@ import {
 import { Dismiss24Regular } from "@fluentui/react-icons";
 import readNDJSONStream from "ndjson-readablestream";
 
-import appLogo from "../../assets/applogo.svg";
 import styles from "./Chat.module.css";
 
 import { chatApi, configApi, RetrievalMode, ChatAppResponse, ChatAppResponseOrError, ChatAppRequest, ResponseMessage, SpeechConfig } from "../../api";
@@ -115,7 +114,6 @@ const Chat = () => {
         configApi().then(config => {
             setShowMultimodalOptions(config.showMultimodalOptions);
             if (config.showMultimodalOptions) {
-                // Initialize from server config so defaults match deployment settings
                 setSendTextSources(config.ragSendTextSources !== undefined ? config.ragSendTextSources : true);
                 setSendImageSources(config.ragSendImageSources);
                 setSearchTextEmbeddings(config.ragSearchTextEmbeddings);
@@ -191,7 +189,6 @@ const Chat = () => {
                     setIsLoading(false);
                     await updateState(event["delta"]["content"]);
                 } else if (event["context"]) {
-                    // Update context with new keys from latest event
                     askResponse.context = { ...askResponse.context, ...event["context"] };
                 } else if (event["error"]) {
                     throw Error(event["error"]);
@@ -199,10 +196,9 @@ const Chat = () => {
             }
         } catch (e) {
             if (e instanceof DOMException && e.name === "AbortError") {
-                // User clicked stop - don't treat as error
                 console.log("Stream aborted by user");
             } else {
-                throw e; // Re-throw other errors to be caught by makeApiRequest
+                throw e;
             }
         } finally {
             setIsStreaming(false);
@@ -302,7 +298,6 @@ const Chat = () => {
                         ...(seed !== null ? { seed: seed } : {})
                     }
                 },
-                // AI Chat Protocol: Client must pass on any session state received from the server
                 session_state: answers.length ? answers[answers.length - 1][1].session_state : null
             };
 
@@ -315,7 +310,6 @@ const Chat = () => {
             }
             if (shouldStream) {
                 const parsedResponse: ChatAppResponse = await handleAsyncRequest(question, answers, response.body, controller.signal);
-                // Only add to answers if we got content, otherwise restore question to input
                 if (parsedResponse.message.content) {
                     setAnswers([...answers, [question, parsedResponse]]);
                     if (typeof parsedResponse.session_state === "string" && parsedResponse.session_state !== "") {
@@ -323,7 +317,6 @@ const Chat = () => {
                         historyManager.addItem(parsedResponse.session_state, [...answers, [question, parsedResponse]], token);
                     }
                 } else {
-                    // Stopped before any content arrived - restore question to input
                     lastQuestionRef.current = answers.length > 0 ? answers[answers.length - 1][0] : "";
                     setRestoredQuestion(question);
                 }
@@ -341,7 +334,6 @@ const Chat = () => {
             setSpeechUrls([...speechUrls, null]);
         } catch (e) {
             if (e instanceof DOMException && e.name === "AbortError") {
-                // Stopped during loading - restore question to input
                 lastQuestionRef.current = answers.length > 0 ? answers[answers.length - 1][0] : "";
                 setRestoredQuestion(question);
             } else {
@@ -372,7 +364,6 @@ const Chat = () => {
         getConfig();
     }, []);
 
-    // Preserve streaming preference when agentic retrieval forces streaming off.
     useEffect(() => {
         updateStreamingPreference(streamingEnabled, streamingDisabledByOverrides);
     }, [streamingDisabledByOverrides, streamingEnabled]);
@@ -399,11 +390,9 @@ const Chat = () => {
                 break;
             case "agenticReasoningEffort": {
                 setRetrievalReasoningEffort(value);
-                // If selecting minimal while web source is enabled, disable web source
                 if (value === "minimal" && webSourceEnabled) {
                     setWebSourceEnabled(false);
                     setHideMinimalRetrievalReasoningOption(false);
-                    // Web source was disabled, so restore streaming
                     updateStreamingPreference(streamingEnabled, false);
                 }
                 break;
@@ -462,7 +451,6 @@ const Chat = () => {
                     setWebSourceEnabled(false);
                     setHideMinimalRetrievalReasoningOption(false);
                 }
-                // Only web source disables streaming
                 const shouldDisableStreaming = !!value && effectiveWebSource;
                 updateStreamingPreference(streamingEnabled, shouldDisableStreaming);
                 break;
@@ -475,7 +463,6 @@ const Chat = () => {
                 const normalizedWebSource = !!value;
                 setWebSourceEnabled(normalizedWebSource);
                 setHideMinimalRetrievalReasoningOption(normalizedWebSource);
-                // When enabling web source, disable follow-up questions and streaming
                 if (normalizedWebSource) {
                     setUseSuggestFollowupQuestions(false);
                 }
@@ -531,7 +518,6 @@ const Chat = () => {
 
     return (
         <div className={styles.container}>
-            {/* Setting the page title using react-helmet-async */}
             <Helmet>
                 <title>{t("pageTitle")}</title>
             </Helmet>
@@ -551,12 +537,9 @@ const Chat = () => {
                 <div className={styles.chatContainer}>
                     {!lastQuestionRef.current ? (
                         <div className={styles.chatEmptyState}>
-                            <img src={appLogo} alt="App logo" width="120" height="120" />
-
                             <h1 className={styles.chatEmptyStateTitle}>{t("chatEmptyStateTitle")}</h1>
                             <h2 className={styles.chatEmptyStateSubtitle}>{t("chatEmptyStateSubtitle")}</h2>
                             {showLanguagePicker && <LanguagePicker onLanguageChange={newLang => i18n.changeLanguage(newLang)} />}
-
                             <ExampleList onExampleClicked={onExampleClicked} useMultimodalAnswering={showMultimodalOptions} />
                         </div>
                     ) : (
