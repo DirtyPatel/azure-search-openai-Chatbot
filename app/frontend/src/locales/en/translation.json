@@ -1,6 +1,6 @@
 {
-    "pageTitle": "Azure OpenAI + AI Search",
-    "headerTitle": "Azure OpenAI + AI Search",
+    "pageTitle": "Algonquin AI Assistant",
+    "headerTitle": "Algonquin AI Assistant",
     "chat": "Chat",
     "login": "Login",
     "logout": "Logout",
@@ -33,13 +33,13 @@
     },
     "developerSettings": "Developer settings",
 
-    "chatEmptyStateTitle": "Chat with your data",
+    "chatEmptyStateTitle": "Algonquin AI Assistant",
     "chatEmptyStateSubtitle": "Ask anything or try an example",
     "defaultExamples": {
-        "1": "What is included in my Northwind Health Plus plan that is not in standard?",
-        "2": "What happens in a performance review?",
-        "3": "What does a Product Manager do?",
-        "placeholder": "Type a new question (e.g. does my plan cover annual eye exams?)"
+        "1": "What are the learning outcomes for CST8919 DevOps Security and Compliance?",
+        "2": "What topics are covered in the CST8918 DevOps Infrastructure as Code course?",
+        "3": "What is the evaluation breakdown for CST8922 Applied Projects?",
+        "placeholder": "Ask a question about your courses (e.g. what software is required for CST8917?)"
     },
     "askTitle": "Ask your data",
     "multimodalExamples": {
