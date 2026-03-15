@@ -1,3 +1,5 @@
+import curve from "../../assets/ac-curve.svg";
+import acLogo from "../../assets/AC_H_OTTAWA_FC_GRN_2.png";
 import { useRef, useState, useEffect, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { Helmet } from "react-helmet-async";
@@ -521,6 +523,14 @@ const Chat = () => {
             <Helmet>
                 <title>{t("pageTitle")}</title>
             </Helmet>
+
+            <div className={styles.header}>
+                <img src={acLogo} className={styles.logo} alt="Algonquin College logo" />
+                <h1 className={styles.headerTitle}>Algonquin AI Assistant</h1>
+            </div>
+
+            <img src={curve} className={styles.curve} alt="" />
+
             <div className={styles.commandsSplitContainer}>
                 <div className={styles.commandsContainer}>
                     {((useLogin && showChatHistoryCosmos) || showChatHistoryBrowser) && (
@@ -533,12 +543,13 @@ const Chat = () => {
                     <SettingsButton className={styles.commandButton} onClick={() => setIsConfigPanelOpen(!isConfigPanelOpen)} />
                 </div>
             </div>
+
+            {/* <img src={curve} className={styles.curve} alt="" /> */}
+
             <div className={styles.chatRoot} style={{ marginLeft: isHistoryPanelOpen ? "300px" : "0" }}>
                 <div className={styles.chatContainer}>
                     {!lastQuestionRef.current ? (
                         <div className={styles.chatEmptyState}>
-                            <h1 className={styles.chatEmptyStateTitle}>{t("chatEmptyStateTitle")}</h1>
-                            <h2 className={styles.chatEmptyStateSubtitle}>{t("chatEmptyStateSubtitle")}</h2>
                             {showLanguagePicker && <LanguagePicker onLanguageChange={newLang => i18n.changeLanguage(newLang)} />}
                             <ExampleList onExampleClicked={onExampleClicked} useMultimodalAnswering={showMultimodalOptions} />
                         </div>
